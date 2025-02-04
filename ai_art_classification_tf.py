@@ -1,28 +1,41 @@
-# general and data handling
 import os
 import sys
-import cv2
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import seaborn as sns
-from sklearn.metrics import confusion_matrix
+
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
 from sklearn.utils.class_weight import compute_class_weight
 
-# torch
-import torch
-import torch.nn as nn
-import torch.optim as optim
-from torch.utils.data import DataLoader, random_split
-from torchvision import datasets, transforms, models
+import tensorflow as tf
+from tensorflow.keras import backend as K
+from tensorflow.keras.models import Model, load_model
+from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.callbacks import ModelCheckpoint, ReduceLROnPlateau, EarlyStopping
 
-# grad-cam (https://arxiv.org/abs/1610.02391, https://github.com/jacobgil/pytorch-grad-cam)
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import BatchNormalization, Dropout, Flatten, Dense, GlobalAveragePooling2D
+from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau, ModelCheckpoint
+from tensorflow.keras.applications import resnet50
+
+from tensorflow.keras.mixed_precision import set_global_policy
+set_global_policy('mixed_float16')
+
+# Import seaborn and sklearn for visualization
+import seaborn as sns
+from sklearn.metrics import confusion_matrix
+
+# Import gradcam to explain model predictions
+import torch
 from pytorch_grad_cam import GradCAM, HiResCAM, ScoreCAM, GradCAMPlusPlus, AblationCAM, XGradCAM, EigenCAM, FullGrad
 from pytorch_grad_cam import GuidedBackpropReLUModel
 from pytorch_grad_cam.utils.model_targets import ClassifierOutputTarget
 from pytorch_grad_cam.utils.image import (show_cam_on_image, preprocess_image, deprocess_image)
+
+import cv2
 
 def load_data(train_data_path, test_data_path, training_split):
     # Create an ImageDataGenerator for train and validation, with validation split
