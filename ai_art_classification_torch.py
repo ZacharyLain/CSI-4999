@@ -260,7 +260,7 @@ if __name__ == "__main__":
     model = CustomResNet50(extra_conv_layers=5)
     model = model.to(device)
     
-    # (Optional) Freeze the base layers (as in your TensorFlow code)
+    # (Optional) Freeze the base layers
     for param in model.base.parameters():
         param.requires_grad = False
         
@@ -285,7 +285,7 @@ if __name__ == "__main__":
     
     # GradCAM Visualization:
     # Choose a target convolutional layer. For instance, here we pick the first conv layer
-    # of the extra convolution block. You may adjust this based on your needs.
+    # of the extra convolution block. This may need to be adjusted
     target_layer = model.extra_convs[0]
     
     gradcam_heatmap(os.path.join(current_dir, 'RawData/ai_art_classification/train/AI_GENERATED/0.jpg'),
